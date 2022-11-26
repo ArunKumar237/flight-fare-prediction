@@ -104,22 +104,22 @@ def train():
 def predict():
     context = {
         FLIGHT_DATA_KEY: None,
-        FLIGHT_FAIR_VALUE: None
+        FLIGHT_FAIR_VALUE_KEY: None
     }
 
     if request.method == 'POST':
         Airline = request.form['Airline']
         Source = request.form['Source']
         Destination = request.form['Destination']
-        Total_Stops = int(reques.form['Total_Stops'])
-        journey_Date = int(reques.form['journey_Date'])
-        journey_Month = int(reques.form['journey_Month'])
-        Dep_hour = int(reques.form['Dep_hour'])
-        Dep_min = int(reques.form['Dep_min'])
-        Arrival_hour = int(reques.form['Arrival_hour'])
-        Arrival_min = int(reques.form['Arrival_min'])
-        Duration_hours = int(reques.form['Duration_hours'])
-        Duration_mins = int(reques.form['Duration_mins'])
+        Total_Stops = int(request.form['Total_Stops'])
+        journey_Date = int(request.form['journey_Date'])
+        journey_Month = int(request.form['journey_Month'])
+        Dep_hour = int(request.form['Dep_hour'])
+        Dep_min = int(request.form['Dep_min'])
+        Arrival_hour = int(request.form['Arrival_hour'])
+        Arrival_min = int(request.form['Arrival_min'])
+        Duration_hours = int(request.form['Duration_hours'])
+        Duration_mins = int(request.form['Duration_mins'])
 
         flight_data = flightData(Airline = Airline,
                                 Source = Source,
@@ -221,4 +221,4 @@ def render_log_dir(req_path):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
