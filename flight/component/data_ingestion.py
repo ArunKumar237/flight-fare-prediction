@@ -105,8 +105,6 @@ class DataIngestion:
             flight_data_frame.drop(["Route", "Additional_Info"], axis = 1, inplace = True)
             flight_data_frame.replace({'non-stop':0,'1 stop':1,'2 stops':2,'3 stops':3,'4 stops':4},inplace=True)
             
-            #csv
-            flight_data_frame.to_csv(r'F:\Projects\flight-fare-prediction\flight\artifact\ingest1_after formatting.csv',index=None)
             flight_data_frame.reset_index(inplace=True,drop=True)
             flight_data_frame["binned"] = pd.cut(
                 flight_data_frame["Price"],
@@ -139,10 +137,6 @@ class DataIngestion:
                 os.makedirs(self.data_ingestion_config.ingested_test_dir, exist_ok= True)
                 logging.info(f"Exporting test dataset to file: [{test_file_path}]")
                 strat_test_set.to_csv(test_file_path,index=False)
-            
-            #csv
-            strat_train_set.to_csv(r'F:\Projects\flight-fare-prediction\flight\artifact\ingest2a_strat_train_set.csv',index=None)
-            strat_test_set.to_csv(r'F:\Projects\flight-fare-prediction\flight\artifact\ingest2b_strat_test_set.csv',index=None)
 
             data_ingestion_artifact = DataIngestionArtifact(train_file_path=train_file_path,
                                 test_file_path=test_file_path,

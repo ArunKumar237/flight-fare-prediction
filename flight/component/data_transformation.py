@@ -16,62 +16,6 @@ import pandas as pd
 from flight.constant import *
 from flight.util.util import read_yaml_file,save_object,save_numpy_array_data,load_data
 
-# class FeatureGenerator(BaseEstimator, TransformerMixin):
-
-#     def __init__(self, add_bedrooms_per_room=True,
-#                  total_rooms_ix=3,
-#                  population_ix=5,
-#                  households_ix=6,
-#                  total_bedrooms_ix=4, columns=None):
-#         """
-#         FeatureGenerator Initialization
-#         add_bedrooms_per_room: bool
-#         total_rooms_ix: int index number of total rooms columns
-#         population_ix: int index number of total population columns
-#         households_ix: int index number of  households columns
-#         total_bedrooms_ix: int index number of bedrooms columns
-#         """
-#         try:
-#             self.columns = columns
-#             if self.columns is not None:
-#                 total_rooms_ix = self.columns.index(COLUMN_TOTAL_ROOMS)
-#                 population_ix = self.columns.index(COLUMN_POPULATION)
-#                 households_ix = self.columns.index(COLUMN_HOUSEHOLDS)
-#                 total_bedrooms_ix = self.columns.index(COLUMN_TOTAL_BEDROOM)
-
-#             self.total_rooms_ix = total_rooms_ix
-#             self.population_ix = population_ix
-#             self.households_ix = households_ix
-#             self.total_bedrooms_ix = total_bedrooms_ix
-#         except Exception as e:
-#             raise FlightException(e, sys) from e
-
-#     def fit(self, X, y=None):
-#         return self
-
-#     def transform(self, X, y=None):
-#         try:
-#             room_per_household = X[:, self.total_rooms_ix] / \
-#                                  X[:, self.households_ix]
-#             population_per_household = X[:, self.population_ix] / \
-#                                        X[:, self.households_ix]
-#             if self.add_bedrooms_per_room:
-#                 bedrooms_per_room = X[:, self.total_bedrooms_ix] / \
-#                                     X[:, self.total_rooms_ix]
-#                 generated_feature = np.c_[
-#                     X, room_per_household, population_per_household, bedrooms_per_room]
-#             else:
-#                 generated_feature = np.c_[
-#                     X, room_per_household, population_per_household]
-
-#             return generated_feature
-#         except Exception as e:
-#             raise FlightException(e, sys) from e
-
-
-
-
-
 class DataTransformation:
 
     def __init__(self, data_transformation_config: DataTransformationConfig,
@@ -101,10 +45,6 @@ class DataTransformation:
 
             num_pipeline = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy="median")),
-                # ('feature_generator', FeatureGenerator(
-                #     add_bedrooms_per_room=self.data_transformation_config.add_bedroom_per_room,
-                #     columns=numerical_columns
-                # )),
                 ('scaler', StandardScaler())
             ]
             )
@@ -160,20 +100,13 @@ class DataTransformation:
             input_feature_test_df = test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df = test_df[target_column_name]
             
-            #csv
-            # input_feature_train_df.to_csv(r'F:\Projects\flight-fare-prediction\flight\artifact\trans1a_input_feature_train.csv',index=None)
-            # input_feature_test_df.to_csv(r'F:\Projects\flight-fare-prediction\flight\artifact\trans1b_input_feature_test.csv',index=None)        
 
             logging.info(f"Applying preprocessing object on training dataframe and testing dataframe")
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
 
-            #csv
-            # pd.DataFrame(input_feature_train_arr).to_csv(r'F:\Projects\flight-fare-prediction\flight\artifact\trans2a_input_feature_train_arr.csv',index=None)
-            # pd.DataFrame(input_feature_test_arr).to_csv(r'F:\Projects\flight-fare-prediction\flight\artifact\trans2b_input_feature_test_arr.csv',index=None)
 
             train_arr = np.c_[ input_feature_train_arr, np.array(target_feature_train_df)]
-
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
             
             transformed_train_dir = self.data_transformation_config.transformed_train_dir

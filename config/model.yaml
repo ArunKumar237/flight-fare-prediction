@@ -18,7 +18,21 @@ model_selection:
     class: RandomForestRegressor
     module: sklearn.ensemble
     params:
-      min_samples_leaf: 3
+      n_estimators: 20
+      max_features: 0.2
+      max_depth: 2
+      max_samples: 0.5
     search_param_grid:
-      min_samples_leaf:
-      - 6
+      n_estimators:
+      - 60
+      - 100
+      - 120
+      max_features:
+      - 0.6
+      - 1.0
+      max_depth:
+      - 8
+      - 10
+      max_samples:
+      - 0.75
+      - 1.0 
