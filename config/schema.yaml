@@ -1,0 +1,29 @@
+columns:
+  Airline : category
+  Source : category
+  Destination : category
+  Total_Stops : int
+  Price : int
+  journey_Date : int
+  journey_Month : int
+  Dep_hour : int
+  Dep_min : int
+  Arrival_hour : int
+  Arrival_min : int
+  Duration_hours : int
+  Duration_mins : int
+numerical_columns:
+  - Total_Stops
+  - journey_Date
+  - journey_Month
+  - Dep_hour
+  - Dep_min
+  - Arrival_hour
+  - Arrival_min
+  - Duration_hours
+  - Duration_mins
+categorical_columns:
+  - Airline
+  - Source
+  - Destination
+target_column: Price
